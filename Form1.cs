@@ -101,6 +101,7 @@ namespace PassGeneration
             {
                 MessageBox.Show("Ошибка генерации пароля \nПопробуйте снова");
             }
+            button2.Visible = true;
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
@@ -159,5 +160,25 @@ namespace PassGeneration
             point = new Point(e.X, e.Y);
         }
 
+        private void textBox2_Click(object sender, EventArgs e)
+        {
+            textBox2.Text = "";
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string textToSave = "Логин - " + textBox2.Text + Environment.NewLine + "Пароль - " + passBox.Text;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text Files (*.txt)|*.txt";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName))
+                {
+                    sw.Write(textToSave);
+                }
+                MessageBox.Show("Пароль успешно сохранён!", "Хорошо", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }
