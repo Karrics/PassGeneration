@@ -26,9 +26,9 @@ namespace PassGeneration
         public static string GeneratePassword(int length, bool includeSimilarChars, bool includeNonAlphaNumericChars)
         {
             Random random = new Random();
-            const string chars = "ABCDEFGHJKLMNPRSTUVWXYZabcdefghijkmnpqrstuvwxyz0123456789!@#$%^&*_-+=?";
+            const string chars = "ABCDEFGHJKMNPRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
             const string similarChars = "il1Lo0O";
-            const string nonAlphaNumericChars = "{}[]()/\\'\"`~,;:.<>!@#$%&";
+            const string nonAlphaNumericChars = "{}[]()/`~,;:.<>!@#$%&|.,";
             string usableChars = chars;
 
             if (!includeSimilarChars)
@@ -41,7 +41,10 @@ namespace PassGeneration
 
             if (!includeNonAlphaNumericChars)
             {
-                usableChars += nonAlphaNumericChars;
+                foreach (char nonAlphaNumericChar in nonAlphaNumericChars)
+                {
+                    usableChars = usableChars.Replace(nonAlphaNumericChar.ToString(), string.Empty);
+                }
             }
 
             StringBuilder password = new StringBuilder();
@@ -91,17 +94,19 @@ namespace PassGeneration
             }
             else
             {
-                password = "0"; 
+                lenght = 8; 
             }
             
             password = GeneratePassword(lenght, checSimilar.Checked, checkNonLetter.Checked);
             passBox.Text = password;
-            passBox.ForeColor = Color.Black;
+            passBox.ForeColor = Color.Black; 
+            button2.Visible = true;
             if (password == "0")
             {
                 MessageBox.Show("Ошибка генерации пароля \nПопробуйте снова");
+                button2.Visible = false;
             }
-            button2.Visible = true;
+           
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
